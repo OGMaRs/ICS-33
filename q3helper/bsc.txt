@@ -1,0 +1,60 @@
+# Setup
+c-->from imp import reload
+c-->import q3solution
+c-->reload(q3solution)
+c-->import random
+c-->from predicate import is_positive, is_prime
+c-->from q3solution import is_prime, primes, lets, in_a_row, differences, skipper, separate, is_sorted, sort, update_min_max, min_max
+# Test in_a_row
+==-->in_a_row(2,[4,4,2,6,6,9,6,7,7,3,2,2])-->{4,6,7,2}
+==-->in_a_row(3,[5,3,7,7,7,2,3,8,5,4,4,4,6])-->{7,4}
+==-->in_a_row(4,[5,5,5])-->set()
+==-->in_a_row(5,map(lambda x : x.rstrip(),open('in_a_row.txt')))-->set()
+==-->in_a_row(4,map(lambda x : x.rstrip(),open('in_a_row.txt')))-->{'l', 'i'}
+==-->in_a_row(3,map(lambda x : x.rstrip(),open('in_a_row.txt')))-->{'l', 'i', 'c'}
+==-->in_a_row(2,map(lambda x : x.rstrip(),open('in_a_row.txt')))-->{'l', 'm', 'i', 'f', 'c', 'x', 'z'}
+^-->in_a_row(1,[1,2,3])-->AssertionError
+# Test differences
+e-->list( differences('abcdefghijklmnopqrstuvwxyz','abc#efghij;lmnopq;stuvwxyz/') )-->[(3, 'd', '#'), (10, 'k', ';'), (17, 'r', ';')]
+e-->list( differences(lets('abcdefghijklmnopqrstuvwxyz///'), lets('abc1ef2hijk3mnopqr4tuvwxyz')) )-->[(3, 'd', '1'), (6, 'g', '2'), (11, 'l', '3'), (18, 's', '4')]
+# Test skipper
+e-->''.join([str(v) for v in skipper('abcdefghijklmnopqrstuvwxyz')])-->abcdefghijklmnopqrstuvwxyz
+e-->''.join([str(v) for v in skipper('abcdefghijklmnopqrstuvwxyz',1)])-->acegikmoqsuwy
+e-->''.join([str(v) for v in skipper('abcdefghijklmnopqrstuvwxyz',2)])-->adgjmpsvy
+e-->' '.join([str(v) for v in skipper(primes(50),2)])-->2 7 17 29 41
+# Test separate
+e-->separate(is_positive,[])-->([], [])
+e-->separate(is_positive,[1, -3, -2, 4, 0, -1, 8])-->([1, 4, 8], [-3, -2, 0, -1])
+e-->separate(is_prime,[i for i in irange(2,20)])-->([2, 3, 5, 7, 11, 13, 17, 19], [4, 6, 8, 9, 10, 12, 14, 15, 16, 18, 20])
+e-->separate(lambda x : len(x) <= 3,'to be or not to be that is the question'.split(' '))-->(['to', 'be', 'or', 'not', 'to', 'be', 'is', 'the'], ['that', 'question'])
+# Test is_sorted
+e-->is_sorted([])-->True
+e-->is_sorted([1,2,3,4,5,6,7])-->True
+e-->is_sorted([1,2,3,7,4,5,6])-->False
+e-->is_sorted([1,2,3,4,5,6,5])-->False
+e-->is_sorted([7,6,5,4,3,2,1])-->False
+# Test sort
+e-->sort([1,2,3,4,5,6,7])-->[1, 2, 3, 4, 5, 6, 7]
+e-->sort([7,6,5,4,3,2,1])-->[1, 2, 3, 4, 5, 6, 7]
+e-->sort([4,5,3,1,2,7,6])-->[1, 2, 3, 4, 5, 6, 7]
+e-->sort([1,7,2,6,3,5,4])-->[1, 2, 3, 4, 5, 6, 7]
+c-->l = [i+1 for i in range(30)]
+c-->random.shuffle(l)
+c-->l = sort(l)
+e-->l-->[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30]
+# Test update_min_max
+e-->update_min_max((1,2),(None,None))-->(1, 2)
+e-->update_min_max((2,1),(None,None))-->(1, 2)
+e-->update_min_max((1,2),(3,4))-->(1, 4)
+e-->update_min_max((2,1),(3,4))-->(1, 4)
+e-->update_min_max((3,4),(1,2))-->(1, 4)
+e-->update_min_max((4,3),(1,2))-->(1, 4)
+# Test min_max
+e-->min_max([])-->(None, None)
+e-->min_max([1])-->(1, 1)
+e-->min_max([1,2])-->(1, 2)
+e-->min_max([2,1])-->(1, 2)
+e-->min_max([1,2,3])-->(1, 3)
+e-->min_max([3,2,1])-->(1, 3)
+e-->min_max([1,2,3,4])-->(1, 4)
+e-->min_max([4,3,2,1])-->(1, 4)

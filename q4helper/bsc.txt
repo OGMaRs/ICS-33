@@ -1,0 +1,30 @@
+# Setup
+c-->from imp import reload
+c-->import q4solution
+c-->reload(q4solution)
+c-->import predicate,random
+c-->from q4solution import code_metric,tour_cost, trav_sales,sum_count, Counter, Modular_Counter
+# Test code_metric
+e-->code_metric('cmtest.py')-->(3, 85)
+e-->code_metric('collatz.py')-->(73, 2856)
+# Test tour_cost
+e-->tour_cost((1,3,5,2,0,4),lambda x,y: (x-y)**2)-->46
+e-->tour_cost((1,3,5,2,0,4,6),lambda x,y: 1 if y == (x+5) % 8 else 2)-->13
+# Test trav_sales
+c-->(l,t)=trav_sales(6,lambda x,y: (x-y)**2)
+e-->l-->18
+e-->tour_cost(t,lambda x,y: (x-y)**2)==18-->True
+c-->(l,t)=trav_sales(7,lambda x,y: 1 if y == (x+5) % 7 else 2)
+e-->l-->7
+e-->tour_cost(t,lambda x,y: 1 if y == (x+5) % 7 else 2)==7-->True
+# Test sum_count
+e-->sum_count(range(5),5,2)-->2
+e-->sum_count([x**2 for x in range(10)],78,4)-->4
+e-->sum_count(5*[10],30,3)-->10
+# Test dumpable
+c-->c = Counter(5)           
+c-->c.afunc = lambda x : x + 1
+c-->mc = Modular_Counter(0,3)
+c-->mc.afunc = lambda x : x + 1
+e-->c.get_state()=={'_value': 5}-->True
+e-->mc.get_state()=={'_value': 0, '_modulus': 3}-->True

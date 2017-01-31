@@ -1,0 +1,23 @@
+c-->from q2solution import yesterday
+# yesterday: computations
+e-->yesterday('9/4/88')-->9/3/2088
+e-->yesterday('9/4/1998')-->9/3/1998
+e-->yesterday('1/2/13')-->1/1/2013
+e-->yesterday('10/01/1998')-->9/30/1998
+e-->yesterday('6/1/1998')-->5/31/1998
+e-->yesterday('1/1/1999')-->12/31/1998
+e-->yesterday('1/1/2014')-->12/31/2013
+e-->yesterday('1/1/14')-->12/31/2013
+e-->yesterday('2/29/2000')-->2/28/2000
+e-->yesterday('3/01/00')-->2/29/2000
+e-->yesterday('3/01/01')-->2/28/2001
+# yesterday: exceptions
+^-->yesterday('13/1/00')-->AssertionError
+^-->yesterday('2/0/00')-->AssertionError
+^-->yesterday('2/00/00')-->AssertionError
+^-->yesterday('2/005/00')-->AssertionError
+^-->yesterday('9/31/2013')-->AssertionError
+^-->yesterday('2/29/2001')-->AssertionError
+^-->yesterday('9/31/2013')-->AssertionError
+^-->yesterday('9X30X2013')-->AssertionError
+

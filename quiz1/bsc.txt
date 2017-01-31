@@ -1,0 +1,59 @@
+# Setup
+c-->from imp import reload
+c-->import q1solution
+c-->reload(q1solution)
+c-->from q1solution import between, both, sort_descendants, sort_generations, big_family, big_word_map, near1, near2, alt_dictionary
+c-->from predicate import is_prime
+c-->from goody import irange
+# Test between/both
+c-->teenager = between(13,19) 
+e-->[teenager(a) for a in irange(12,20)]-->[False, True, True, True, True, True, True, True, False]
+c-->middle_ager = between(30,50)
+e-->[middle_ager(a) for a in (25,29,30,35,40,45,50,51,55)]-->[False, False, True, True, True, True, True, False, False]
+^-->bad = between(10,9)-->AssertionError
+c-->check = both(is_prime, lambda x : 50 <= x <= 60) 
+e-->[check(v) for v in irange(12,20)]-->[False, False, False, False, False, False, False, False, False]
+c-->check = both(lambda x : 'a' <= x <= 'z', lambda x : x not in 'aeiou')
+e-->[check(c) for c in "Mr. Smith Goes to Washington"]-->[False, True, False, False, False, True, False, True, True, False, False, False, False, True, False, True, False, False, False, False, True, True, False, True, True, True, False, True]
+# Test sort_descendants/sort_generations
+c-->family = dict(David=[6,4,8],Muriel=[3,5],Barbara=[5,3],Chester=[6,6,6],Ingrid=[4,4,4,2,4])
+e-->sort_descendants(family)-->['Barbara', 'Muriel', 'Chester', 'David', 'Ingrid']
+c-->family = dict(Allen=[6,4,8],Dody=[3,5],Emile=[5,3],Harold=[6,6,6],Louis=[4,4,4,2,4])
+e-->sort_descendants(family)-->['Dody', 'Emile', 'Allen', 'Harold', 'Louis']
+c-->family = dict(David=[6,5,8],Muriel=[3,5],Barbara=[5,3],Chester=[6,6,6],Ingrid=[4,4,4,2,4])
+e-->sort_generations(family)-->[('Ingrid', [4, 4, 4, 2, 4]), ('David', [6, 5, 8]), ('Chester', [6, 6, 6]), ('Barbara', [5, 3]), ('Muriel', [3, 5])]
+c-->family = dict(Allen=[12],Dody=[15],Emile=[8],Harold=[6,6,6],Louis=[4,4,4,2,4],Robert=[6,12])
+e-->sort_generations(family)-->[('Louis', [4, 4, 4, 2, 4]), ('Harold', [6, 6, 6]), ('Robert', [6, 12]), ('Dody', [15]), ('Allen', [12]), ('Emile', [8])]
+# Test big_family/big_word_map
+c-->family = dict(David=[6,5,8],Muriel=[3,5],Barbara=[5,3],Chester=[6,6,6],Ingrid=[4,4,4,2,4])
+==-->big_family(family)-->{'Ingrid', 'Chester', 'David'}
+c-->family = dict(Allen=[12],Dody=[15],Emile=[8],Harold=[6,6,6],Louis=[4,4,4,2,4],Robert=[6,12])
+==-->big_family(family)-->{'Allen', 'Louis', 'Harold', 'Dody', 'Robert'}
+==-->sorted(big_word_map('To be or not to be that is the question').items())-->[('question', {'q', 'u', 's', 't', 'i', 'o', 'e', 'n'}), ('that', {'a', 't', 'h'})]
+==-->sorted(big_word_map('When in the course of human events').items())-->[('When', {'W', 'e', 'h', 'n'}), ('course', {'u', 'c', 's', 'o', 'r', 'e'}), ('events', {'v', 't', 's', 'e', 'n'}), ('human', {'a', 'u', 'm', 'h', 'n'})]
+# Testing near1/near2
+==-->near1('radar',1)-->{'a': {'a', 'r', 'd'}, 'r': {'a', 'r'}, 'd': {'a', 'd'}}
+==-->near1('radar',2)-->{'a': {'a', 'r', 'd'}, 'r': {'a', 'r', 'd'}, 'd': {'a', 'r', 'd'}}
+==-->near1('radar',3)-->{'a': {'a', 'r', 'd'}, 'r': {'a', 'r', 'd'}, 'd': {'a', 'r', 'd'}}
+==-->near1('whiplash',1)-->{'i': {'i', 'h', 'p'}, 'a': {'a', 'l', 's'}, 'w': {'w', 'h'}, 'p': {'i', 'l', 'p'}, 's': {'a', 's', 'h'}, 'l': {'a', 'l', 'p'}, 'h': {'i', 's', 'w', 'h'}}
+==-->near1('whiplash',2)-->{'i': {'i', 'l', 'h', 'w', 'p'}, 'a': {'a', 'l', 's', 'h', 'p'}, 'w': {'i', 'w', 'h'}, 'p': {'i', 'l', 'a', 'h', 'p'}, 's': {'a', 'l', 's', 'h'}, 'l': {'i', 'l', 'a', 's', 'p'}, 'h': {'i', 'a', 'p', 's', 'h', 'w'}}
+==-->near1('whiplash',3)-->{'i': {'i', 'a', 'p', 'l', 'h', 'w'}, 'a': {'i', 'a', 'p', 'l', 's', 'h'}, 'w': {'i', 'h', 'w', 'p'}, 'p': {'i', 'a', 'p', 'l', 's', 'h', 'w'}, 's': {'a', 'l', 's', 'h', 'p'}, 'l': {'i', 'a', 'p', 'l', 's', 'h'}, 'h': {'p', 'l', 's', 'h', 'i', 'a', 'w'}}
+==-->near1('whiplash',4)-->{'i': {'i', 'a', 'p', 'l', 's', 'h', 'w'}, 'a': {'i', 'a', 'p', 'l', 's', 'h'}, 'w': {'i', 'l', 'h', 'w', 'p'}, 'p': {'i', 'a', 'p', 'l', 's', 'h', 'w'}, 's': {'i', 'a', 'p', 'l', 's', 'h'}, 'l': {'i', 'a', 'p', 'l', 's', 'h', 'w'}, 'h': {'p', 'l', 's', 'h', 'i', 'a', 'w'}}
+==-->near1('whiplash',5)-->{'i': {'i', 'a', 'p', 'l', 's', 'h', 'w'}, 'a': {'i', 'a', 'p', 'l', 's', 'h', 'w'}, 'w': {'i', 'a', 'p', 'l', 'h', 'w'}, 'p': {'i', 'a', 'p', 'l', 's', 'h', 'w'}, 's': {'i', 'a', 'p', 'l', 's', 'h'}, 'l': {'i', 'a', 'p', 'l', 's', 'h', 'w'}, 'h': {'p', 'l', 's', 'h', 'i', 'a', 'w'}}
+==-->near1('whiplash',6)-->{'i': {'i', 'a', 'p', 'l', 's', 'h', 'w'}, 'a': {'i', 'a', 'p', 'l', 's', 'h', 'w'}, 'w': {'i', 'a', 'p', 'l', 's', 'h', 'w'}, 'p': {'i', 'a', 'p', 'l', 's', 'h', 'w'}, 's': {'i', 'a', 'p', 'l', 's', 'h', 'w'}, 'l': {'i', 'a', 'p', 'l', 's', 'h', 'w'}, 'h': {'p', 'l', 's', 'h', 'i', 'a', 'w'}}
+==-->near1('whiplash',7)-->{'i': {'i', 'a', 'p', 'l', 's', 'h', 'w'}, 'a': {'i', 'a', 'p', 'l', 's', 'h', 'w'}, 'w': {'i', 'a', 'p', 'l', 's', 'h', 'w'}, 'p': {'i', 'a', 'p', 'l', 's', 'h', 'w'}, 's': {'i', 'a', 'p', 'l', 's', 'h', 'w'}, 'l': {'i', 'a', 'p', 'l', 's', 'h', 'w'}, 'h': {'p', 'l', 's', 'h', 'i', 'a', 'w'}}
+==-->near2('radar',1)-->{'a': {'a', 'r', 'd'}, 'r': {'a', 'r'}, 'd': {'a', 'd'}}
+==-->near2('radar',2)-->{'a': {'a', 'r', 'd'}, 'r': {'a', 'r', 'd'}, 'd': {'a', 'r', 'd'}}
+==-->near2('radar',3)-->{'a': {'a', 'r', 'd'}, 'r': {'a', 'r', 'd'}, 'd': {'a', 'r', 'd'}}
+==-->near2('whiplash',1)-->{'i': {'i', 'h', 'p'}, 'a': {'a', 'l', 's'}, 'w': {'w', 'h'}, 'p': {'i', 'l', 'p'}, 's': {'a', 's', 'h'}, 'l': {'a', 'l', 'p'}, 'h': {'i', 's', 'w', 'h'}}
+==-->near2('whiplash',2)-->{'i': {'i', 'l', 'h', 'w', 'p'}, 'a': {'a', 'l', 's', 'h', 'p'}, 'w': {'i', 'w', 'h'}, 'p': {'i', 'l', 'a', 'h', 'p'}, 's': {'a', 'l', 's', 'h'}, 'l': {'i', 'l', 'a', 's', 'p'}, 'h': {'i', 'a', 'p', 's', 'h', 'w'}}
+==-->near2('whiplash',3)-->{'i': {'i', 'a', 'p', 'l', 'h', 'w'}, 'a': {'i', 'a', 'p', 'l', 's', 'h'}, 'w': {'i', 'h', 'w', 'p'}, 'p': {'i', 'a', 'p', 'l', 's', 'h', 'w'}, 's': {'a', 'l', 's', 'h', 'p'}, 'l': {'i', 'a', 'p', 'l', 's', 'h'}, 'h': {'p', 'l', 's', 'h', 'i', 'a', 'w'}}
+==-->near2('whiplash',4)-->{'i': {'i', 'a', 'p', 'l', 's', 'h', 'w'}, 'a': {'i', 'a', 'p', 'l', 's', 'h'}, 'w': {'i', 'l', 'h', 'w', 'p'}, 'p': {'i', 'a', 'p', 'l', 's', 'h', 'w'}, 's': {'i', 'a', 'p', 'l', 's', 'h'}, 'l': {'i', 'a', 'p', 'l', 's', 'h', 'w'}, 'h': {'p', 'l', 's', 'h', 'i', 'a', 'w'}}
+==-->near2('whiplash',5)-->{'i': {'i', 'a', 'p', 'l', 's', 'h', 'w'}, 'a': {'i', 'a', 'p', 'l', 's', 'h', 'w'}, 'w': {'i', 'a', 'p', 'l', 'h', 'w'}, 'p': {'i', 'a', 'p', 'l', 's', 'h', 'w'}, 's': {'i', 'a', 'p', 'l', 's', 'h'}, 'l': {'i', 'a', 'p', 'l', 's', 'h', 'w'}, 'h': {'p', 'l', 's', 'h', 'i', 'a', 'w'}}
+==-->near2('whiplash',6)-->{'i': {'i', 'a', 'p', 'l', 's', 'h', 'w'}, 'a': {'i', 'a', 'p', 'l', 's', 'h', 'w'}, 'w': {'i', 'a', 'p', 'l', 's', 'h', 'w'}, 'p': {'i', 'a', 'p', 'l', 's', 'h', 'w'}, 's': {'i', 'a', 'p', 'l', 's', 'h', 'w'}, 'l': {'i', 'a', 'p', 'l', 's', 'h', 'w'}, 'h': {'p', 'l', 's', 'h', 'i', 'a', 'w'}}
+==-->near2('whiplash',7)-->{'i': {'i', 'a', 'p', 'l', 's', 'h', 'w'}, 'a': {'i', 'a', 'p', 'l', 's', 'h', 'w'}, 'w': {'i', 'a', 'p', 'l', 's', 'h', 'w'}, 'p': {'i', 'a', 'p', 'l', 's', 'h', 'w'}, 's': {'i', 'a', 'p', 'l', 's', 'h', 'w'}, 'l': {'i', 'a', 'p', 'l', 's', 'h', 'w'}, 'h': {'p', 'l', 's', 'h', 'i', 'a', 'w'}}
+# Test alt_dictionary
+c-->calls = {('a','b'):3, ('b','c'): 2, ('a','c'): 5} 
+==-->sorted(alt_dictionary(calls).items())-->[('a', {'b': 3, 'c': 5}), ('b', {'c': 2})]
+c-->calls = {('a','b'):3, ('b','c'): 2, ('a','c'): 5, ('a','d'):2, ('d','a'):3, ('c','d'):4, ('d','b'):5} 
+==-->sorted(alt_dictionary(calls).items())-->[('a', {'b': 3, 'c': 5, 'd': 2}), ('b', {'c': 2}), ('c', {'d': 4}), ('d', {'a': 3, 'b': 5})]

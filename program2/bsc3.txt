@@ -1,0 +1,38 @@
+# Setup
+c-->from imp import reload
+c-->import generator
+c-->reload(generator)
+c-->import generator
+c-->from goody import irange
+c-->from predicate import is_prime
+c-->from generator import hide, running_count, once_in_a_row, group, overlap, sequence, alternate
+# Test running_count
+e-->' '.join([str(i) for i in running_count('bananastand',lambda x : x in 'aeiou')])-->0 1 1 2 2 3 3 3 4 4 4
+e-->' '.join([str(i) for i in running_count(hide('bananastand'),lambda x : x in 'aeiou')])-->0 1 1 2 2 3 3 3 4 4 4
+e-->' '.join([str(i) for i in running_count(hide('bananastand'),lambda x : 'a'<=x<='m')])-->1 2 2 3 3 4 4 4 5 5 6
+e-->' '.join([str(i) for i in running_count(hide([1,2,3,4,5,6,7,8,9,10]),lambda x : is_prime(x))])-->0 1 2 2 3 3 4 4 4 4
+# Test once_in_a_row
+e-->' '.join([str(i) for i in once_in_a_row('abbbcdefffaabccf')])-->a b c d e f a b c f
+e-->' '.join([str(i) for i in once_in_a_row(hide('abbbcdefffaabccf'))])-->a b c d e f a b c f
+e-->' '.join([str(i) for i in once_in_a_row(hide('zzwwwyxzzyyywx'))])-->z w y x z y w x
+e-->' '.join([str(i) for i in once_in_a_row(hide([is_prime(x) for x in irange(1,20)]))])-->False True False True False True False True False True False True False True False
+# Test group
+e-->' '.join([str(i) for i in group('abcdefghijk',3)])-->['a', 'b', 'c'] ['d', 'e', 'f'] ['g', 'h', 'i']
+e-->' '.join([str(i) for i in group(hide('abcdefghijk'),3)])-->['a', 'b', 'c'] ['d', 'e', 'f'] ['g', 'h', 'i']
+e-->' '.join([str(i) for i in group(hide('abcdefghijk'),1)])-->['a'] ['b'] ['c'] ['d'] ['e'] ['f'] ['g'] ['h'] ['i'] ['j'] ['k']
+e-->' '.join([str(i) for i in group(hide('abcdefghijk'),2)])-->['a', 'b'] ['c', 'd'] ['e', 'f'] ['g', 'h'] ['i', 'j']
+e-->' '.join([str(i) for i in group(hide('abcdefghijk'),5)])-->['a', 'b', 'c', 'd', 'e'] ['f', 'g', 'h', 'i', 'j']
+# Test overlap
+e-->' '.join([str(i) for i in overlap('abcdefghijk',3,2)])-->['a', 'b', 'c'] ['c', 'd', 'e'] ['e', 'f', 'g'] ['g', 'h', 'i'] ['i', 'j', 'k']
+e-->' '.join([str(i) for i in overlap(hide('abcdefghijk'),3,2)])-->['a', 'b', 'c'] ['c', 'd', 'e'] ['e', 'f', 'g'] ['g', 'h', 'i'] ['i', 'j', 'k']
+e-->' '.join([str(i) for i in overlap(hide('abcdefghijkl'),5,2)])-->['a', 'b', 'c', 'd', 'e'] ['c', 'd', 'e', 'f', 'g'] ['e', 'f', 'g', 'h', 'i'] ['g', 'h', 'i', 'j', 'k']
+e-->' '.join([str(i) for i in overlap(hide('abcdefghijkl'),5,3)])-->['a', 'b', 'c', 'd', 'e'] ['d', 'e', 'f', 'g', 'h'] ['g', 'h', 'i', 'j', 'k']
+e-->' '.join([str(i) for i in overlap(hide('abcdefghijkl'),5)])-->['a', 'b', 'c', 'd', 'e'] ['b', 'c', 'd', 'e', 'f'] ['c', 'd', 'e', 'f', 'g'] ['d', 'e', 'f', 'g', 'h'] ['e', 'f', 'g', 'h', 'i'] ['f', 'g', 'h', 'i', 'j'] ['g', 'h', 'i', 'j', 'k'] ['h', 'i', 'j', 'k', 'l']
+# Test sequence
+e-->' '.join([str(i) for i in sequence('abcde','fg','hijk')])-->a b c d e f g h i j k
+e-->' '.join([str(i) for i in sequence(hide('abcde'),hide('fg'),hide('hijk'))])-->a b c d e f g h i j k
+e-->' '.join([str(i) for i in sequence(hide('ab'),hide('cde'),hide('fghijk'))])-->a b c d e f g h i j k
+# Test alternate
+e-->' '.join([str(i) for i in alternate('abcde','fg','hijk')])-->a f h b g i c
+e-->' '.join([str(i) for i in alternate(hide('abcde'),hide('fg'),hide('hijk'))])-->a f h b g i c
+e-->' '.join([str(i) for i in alternate(hide('abcd'),hide('efgh'),hide('ijkl'))])-->a e i b f j c g k d h l
